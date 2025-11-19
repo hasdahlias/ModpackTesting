@@ -1,3 +1,5 @@
+function setJob(id) {}
+
 /**
  * @class
  * @param {int} id
@@ -14,7 +16,7 @@ class job {
     this.itemRclickFunction = itemrclickfunction;
   }
   Upgrade(index, player) {
-    player.persistentData.job = setJob(next[index]);
+    player.persistentData.job = setJob(this.next[index]);
   }
 }
 
@@ -25,5 +27,3 @@ PlayerEvents.tick((event) => {
 ItemEvents.rightClicked((event) => {
   event.player.persistentData.job.itemRclickFunction(event);
 });
-
-let a = new job();
