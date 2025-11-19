@@ -1,5 +1,14 @@
-function setJob(id) {}
+function getJob(id) {
+	let data = JsonIO.read(`kkubejs/server_scripts/Job/jobs/${id}.json`.replace(/[^{}]/, "").replace("literal", ""))
+	let tickFunction = new Function("event", data.tickfn)
+	let itemRclickFunction = new Function("event", data.rclick)
+	let next = data.next
+	return new job(id, next, tickFunction, itemRclickFunction)
+}
 
+function findJob(player) {
+	return getJob(player.persistentData.job)
+}
 /**
  * @class
  * @param {int} id
@@ -8,22 +17,22 @@ function setJob(id) {}
  * @param  {function} itemrclickfunction
  *
  */
-class job {
-  constructor(id, next, tickFunction, itemrclickfunction) {
-    this.id = id;
-    this.next = next;
-    this.tickFunction = tickFunction;
-    this.itemRclickFunction = itemrclickfunction;
-  }
-  Upgrade(index, player) {
-    player.persistentData.job = setJob(this.next[index]);
-  }
+function job(id, next, tickFunction, itemrclickfunction) {
+	this.id = id;
+	this.next = next;
+	this.tickFunction = tickFunction;
+	this.rclickFunction = itemrclickfunction;
+
+	this.Upgrade = function(index, player) {
+		player.persistentData.job = getJob(this.next[index]);
+	}
 }
 
 PlayerEvents.tick((event) => {
-  event.player.persistentData.job.tickFunction(event);
+	console.log(findJob(event.player).tickFunction(event))
 });
 
 ItemEvents.rightClicked((event) => {
-  event.player.persistentData.job.itemRclickFunction(event);
+	console.log(findJob(event.player).rclickFunction(event))
+
 });

@@ -1,0 +1,7 @@
+{
+	"tickfn":"\n return \"Hello\";\n",
+	"rclick":"\n return `yay you rightclicked with an ${event.item}`\n",
+	"next": [
+		"test_evolution",
+	]
+}
